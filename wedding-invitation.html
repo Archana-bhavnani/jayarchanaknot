@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Archana & Jay | Wedding Invitation</title>
+<style>
+:root{--cream:#fff8ed;--paper:#fffdf8;--maroon:#741f32;--gold:#b88a3b;--ink:#3b2524}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:Georgia,serif}section{padding:35px 20px;max-width:1050px;margin:auto}.hero{min-height:100vh;display:grid;place-items:center;text-align:center;background:linear-gradient(145deg,#fff8ed,#f6e8dc);padding:30px 20px}.hero-inner{max-width:760px}.kicker{letter-spacing:5px;text-transform:uppercase;color:var(--gold);font-size:12px}h1{font-size:clamp(55px,10vw,105px);font-weight:400;line-height:.9;margin:25px 0;color:var(--maroon)}.amp{font-style:italic;color:var(--gold);font-size:.58em}.date{font-size:20px;letter-spacing:3px}.subtitle{font-size:18px;line-height:1.7}.btn{display:inline-block;padding:13px 25px;border:1px solid var(--maroon);color:var(--maroon);text-decoration:none;border-radius:30px;margin-top:12px}.title{text-align:center;color:var(--maroon);font-size:42px;font-weight:400}.ornament{text-align:center;color:var(--gold);font-size:25px}.story{text-align:center;line-height:1.9;font-size:18px;max-width:720px;margin:auto}.events,.family{display:grid;grid-template-columns:1fr 1fr;gap:24px}.card{background:var(--paper);border:1px solid #e6d4c1;border-radius:18px;padding:30px;box-shadow:0 10px 30px #8b5a3210}.card h3{color:var(--maroon);font-size:25px;margin:0 0 5px}.card h4{font-weight:normal;color:var(--gold);letter-spacing:1px}.event{padding:16px 0;border-top:1px solid #eaded2}.event:first-of-type{border-top:0}.event b{display:block;color:var(--maroon);font-size:18px;margin-bottom:4px}.map-btn{display:inline-block;margin-top:10px;padding:9px 17px;border:1px solid var(--gold);border-radius:22px;color:var(--maroon);text-decoration:none;font-size:13px}.countdown{background:var(--maroon);color:#fff8ed;max-width:none;text-align:center}.countdown .title{color:#fff8ed}.timer{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}.timebox{min-width:95px;padding:18px 12px;border:1px solid #c9a76b;border-radius:12px}.timebox strong{font-size:35px;display:block;color:#f1d28f}.timebox small{letter-spacing:2px}.scratch-wrap{max-width:430px;margin:30px auto;text-align:center}.scratch-card{position:relative;height:230px;border-radius:20px;overflow:hidden;background:linear-gradient(135deg,#fff1cf,#f7dfaa);border:1px solid #c9a76b}.scratch-message{position:absolute;inset:0;display:grid;place-items:center;padding:25px;color:var(--maroon);font-size:23px;line-height:1.5;text-align:center}.scratch-message small{display:block;font-size:12px;letter-spacing:2px;color:#8a6a60;margin-bottom:8px}.scratch-tip{font-size:13px;color:#876;margin-top:12px}.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.photo{height:280px;border-radius:16px;overflow:hidden;background:#fffdf8;border:4px solid #c9a76b;box-shadow:0 10px 25px rgba(139,90,50,0.18);padding:8px;display:grid;place-items:center}.photo img{width:100%;height:100%;object-fit:contain;background-color:#1a1a1a;border-radius:8px}.rsvp{text-align:center}form{max-width:600px;margin:30px auto;display:grid;gap:12px}input,select,textarea{width:100%;padding:14px;border:1px solid #dcc8b4;border-radius:10px;background:#fffdf9;font:inherit}textarea{min-height:110px}button{border:0;background:var(--maroon);color:white;padding:14px;border-radius:30px;font:inherit}footer{background:#35171f;color:#f8e8d4;text-align:center;padding:50px 20px}footer strong{font-size:32px;font-weight:400}.center{text-align:center}@media(max-width:700px){.events,.family{grid-template-columns:1fr}.gallery{grid-template-columns:1fr 1fr}.photo{height:230px}.title{font-size:34px}}
+
+#scratchCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  touch-action: none;
+}
+/* Sparkling Canvas Background Styling */
+/* Envelope / Door Opening Effect */
+#welcomeOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  pointer-events: auto;
+  transition: visibility 1.2s ease;
+}
+
+/* Left & Right Flaps (Door/Envelope halves) */
+.door-left, .door-right {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(135deg, #741f32 0%, #35171f 100%);
+  display: flex;
+  align-items: center;
+  transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+}
+
+.door-left {
+  left: 0;
+  justify-content: flex-end;
+  border-right: 2px solid #c9a76b;
+}
+
+.door-right {
+  right: 0;
+  justify-content: flex-start;
+  border-left: 2px solid #c9a76b;
+}
+
+/* Center Content & Seal Button */
+.door-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  text-align: center;
+  color: #fff8ed;
+  width: 90%;
+  max-width: 420px;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.door-card {
+  background: rgba(53, 23, 31, 0.92);
+  border: 2px solid #c9a76b;
+  border-radius: 20px;
+  padding: 35px 25px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+}
+
+.door-card h2 {
+  font-size: clamp(32px, 5vw, 48px);
+  margin: 12px 0;
+  color: #f1d28f;
+  font-weight: 400;
+}
+
+.open-envelope-btn {
+  background: linear-gradient(135deg, #c9a76b, #b88a3b);
+  color: #35171f;
+  border: none;
+  padding: 14px 30px;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 20px;
+  letter-spacing: 2px;
+  box-shadow: 0 5px 15px rgba(201, 167, 107, 0.4);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.open-envelope-btn:hover {
+  transform: scale(1.06);
+  background: linear-gradient(135deg, #f1d28f, #c9a76b);
+}
+
+/* Open Animation Classes */
+#welcomeOverlay.open {
+  visibility: hidden;
+}
+
+#welcomeOverlay.open .door-left {
+  transform: translateX(-100%);
+}
+
+#welcomeOverlay.open .door-right {
+  transform: translateX(100%);
+}
+
+#welcomeOverlay.open .door-content {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.8);
+}
+#bgCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* Isse aapke buttons aur interactions disturb nahi honge */
+  z-index: 999; /* Pure page par sparkling overlay layega */
+}
+</style>
+</head>
+<body>
+<header class="hero"><div class="hero-inner"><div class="kicker">Together with their families</div><h1>Archana <span class="amp">&amp;</span> Jay</h1><div class="date">25 · 26 NOVEMBER 2026</div><p class="subtitle">Two hearts, two families, one beautiful beginning.<br>With love and blessings, we invite you to celebrate our wedding.</p><a class="btn" href="#events">Explore Our Celebration</a></div></header>
+<section><div class="ornament">✦ ❈ ✦</div><h2 class="title">The Beginning of Forever</h2><p class="story">With the blessings of our families and the love that brought us together, we are beginning a new chapter of our lives. Your presence and blessings will make our celebrations even more special.</p></section>
+<section id="events"><div class="ornament">✦ ❈ ✦</div>><h2 class="title">Our Wedding Celebrations</h2><div class="events"><div class="card"><h3>25 November 2026</h3><h4>PORBANDAR</h4><div class="event"><b>Guru Agman</b>Venue: Birla Hall<br>Timing: 9AM</div><div class="event"><b>Haldi</b>Venue: Birla Hall<br>Timing: 12PM</div><div class="event"><b>Sangeet</b>Venue: Birla Hall<br>Timing: 6PM</div><a class="map-btn" href="https://www.google.com/maps/search/?api=1&query=Birla+Hall+Porbandar" target="_blank">📍 Open in Maps</a></div><div class="card"><h3>26 November 2026</h3><h4>RAJKOT</h4><div class="event"><b>Wedding Ceremony</b>Venue: Gurdwara Sri Guru Singh Sabha, Rajkot<br>Timing: 10AM</div><a class="map-btn" href="https://www.google.com/maps/search/?api=1&query=Gurdwara+Sri+Guru+Singh+Sabha,+Rajkot&utm_source=chatgpt.com" target="_blank">📍 Open in Maps</a><div class="event"><b>Mini Reception</b>Venue: The Grand Thakar Banquet Hall<br>Timing: 1PM</div><a class="map-btn" href="https://www.google.com/maps/search/?api=1&query=The+Grand+Thakar+Banquet+Hall+Rajkot" target="_blank">📍 Open in Maps</a></div></div></section>
+<section><div class="ornament">✦ ❈ ✦</div><h2 class="title">With the Blessings of Our Families</h2><div class="family"><div class="card center"><h3>Archana</h3><p>Daughter of<br><strong>Hemant Bhai &amp; Geeta Ben Bhavnani</strong></p></div><div class="card center"><h3>Jay</h3><p>Son of<br><strong>Mahesh Bhai &amp; Indira Ben Lakhwani</strong></p></div></div></section>
+<section class="countdown"><h2 class="title">Counting Down to Forever</h2><div class="timer"><div class="timebox"><strong id="days">0</strong><small>DAYS</small></div><div class="timebox"><strong id="hours">0</strong><small>HOURS</small></div><div class="timebox"><strong id="mins">0</strong><small>MINUTES</small></div><div class="timebox"><strong id="secs">0</strong><small>SECONDS</small></div></div></section>
+<section id="scratch"><div class="ornament">✦ ❈ ✦</div><h2 class="title">A Little Surprise</h2><p class="center">Scratch the card to reveal a special message from us 💌</p><div class="scratch-wrap"><div class="scratch-card"><div class="scratch-message"><div><small>ARCHANA ♥ JAY</small>Every love story is beautiful,<br>but ours is our favourite. ✨</div></div><canvas id="scratchCanvas"></canvas></div><div class="scratch-tip">Use your finger on mobile or mouse on desktop to scratch ✨</div></div></section>
+<section id="gallery"><div class="ornament">✦ ❈ ✦</div><h2 class="title">Our Memories</h2><div class="gallery">
+<div class="photo"><img src="Media (5).jpeg" alt="Memory 1"></div>
+<div class="photo"><img src="Media (2) (1).jpg" alt="Memory 2"></div>
+<div class="photo"><img src="Media (3) (1).jpg" alt="Memory 3"></div>
+<div class="photo"><img src="Media.jpeg" alt="Memory 4"></div>
+<div class="photo"><img src="Media (4) (1).jpg" alt="Memory 5"></div>
+<div class="photo"><img src="Media (1).jpeg" alt="Memory 6"></div>
+</div></section>
+<!-- Envelope / Royal Door Welcome Overlay -->
+<div id="welcomeOverlay">
+  <div class="door-left"></div>
+  <div class="door-right"></div>
+  
+  <div class="door-content" id="doorContent">
+    <div class="door-card">
+      <div class="ornament">✦ ❈ ✦</div>
+      <p style="letter-spacing: 3px; font-size: 12px; color: #c9a76b; text-transform: uppercase; margin: 0;">Wedding Invitation</p>
+      <h2>Archana &amp; Jay</h2>
+      <p style="font-size: 15px; line-height: 1.6; color: #f8e8d4; margin-top: 10px;">
+        Together with their families<br>
+        <b>25 · 26 November 2026</b>
+      </p>
+      <button class="open-envelope-btn" onclick="openEnvelope()">OPEN INVITATION ✨</button>
+    </div>
+  </div>
+</div>
+<canvas id="bgCanvas"></canvas>
+<!-- <section class="rsvp">
+<div class="ornament">✦ ❈ ✦</div>
+<h2 class="title">Are You Attending?</h2>
+<p>Please let us know if you will make it to our special day.</p>
+<form>
+<input type="text" placeholder="Your Full Name" required>
+<input type="email" placeholder="Your Email Address" required>
+<input type="tel" placeholder="Your Phone Number" required>
+<select>
+<option>Yes, I will be there</option>
+<option>Sorry, I can't make it</option>
+</select>
+<textarea placeholder="Your wishes for the couple..."></textarea>
+<button type="submit">Send RSVP</button>
+</form> -->
+</section><footer><strong>Archana &amp; Jay</strong><p>25 · 26 November 2026</p></footer>
+
+<script>
+
+    // Sparkling Particles Background Effect
+const bgCanvas = document.getElementById('bgCanvas');
+const bgCtx = bgCanvas.getContext('2d');
+
+let particles = [];
+const particleCount = 45; // Particles ki tadad
+
+function resizeBgCanvas() {
+  bgCanvas.width = window.innerWidth;
+  bgCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeBgCanvas);
+resizeBgCanvas();
+
+class Particle {
+  constructor() {
+    this.reset();
+  }
+
+  reset() {
+    this.x = Math.random() * bgCanvas.width;
+    this.y = Math.random() * bgCanvas.height;
+    this.size = Math.random() * 3 + 1; // Particle size
+    this.alpha = Math.random(); // Opacity
+    this.speedAlpha = (Math.random() * 0.02 + 0.005) * (Math.random() < 0.5 ? 1 : -1);
+    this.velocityY = -(Math.random() * 0.5 + 0.2); // Dhire dhire upar ki taraf float hone ke liye
+    this.velocityX = (Math.random() - 0.5) * 0.3;
+  }
+
+  update() {
+    this.y += this.velocityY;
+    this.x += this.velocityX;
+    this.alpha += this.speedAlpha;
+
+    // Fade in/out effect
+    if (this.alpha <= 0 || this.alpha >= 1) {
+      this.speedAlpha = -this.speedAlpha;
+    }
+
+    // Boundary check
+    if (this.y < 0 || this.x < 0 || this.x > bgCanvas.width) {
+      this.reset();
+      this.y = bgCanvas.height;
+    }
+  }
+
+  draw() {
+    bgCtx.save();
+    bgCtx.globalAlpha = Math.max(0, Math.min(1, this.alpha));
+    bgCtx.fillStyle = "#b88a3b"; // Golden sparkling color
+    bgCtx.shadowBlur = 10;
+    bgCtx.shadowColor = "#f1d28f";
+    bgCtx.beginPath();
+    bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    bgCtx.fill();
+    bgCtx.restore();
+  }
+}
+
+function initParticles() {
+  particles = [];
+  for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
+  }
+}
+
+function animateParticles() {
+  bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+  particles.forEach((p) => {
+    p.update();
+    p.draw();
+  });
+  requestAnimationFrame(animateParticles);
+}
+
+initParticles();
+animateParticles();
+    function sendToWhatsApp(e) {
+  e.preventDefault();
+  
+  const name = document.getElementById("guestName").value;
+  const phone = document.getElementById("guestPhone").value;
+  const status = document.getElementById("guestStatus").value;
+  const wishes = document.getElementById("guestWishes").value;
+
+  // Yahan "91XXXXXXXXXX" ki jagah aap apna WhatsApp number likhein (Country code ke sath, jaise 919876543210)
+  const myWhatsAppNumber = "9664705690"; 
+
+  const message = `*New RSVP Response*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Status:* ${status}%0A*Wishes:* ${wishes}`;
+
+  window.open(`https://wa.me/${myWhatsAppNumber}?text=${message}`, '_blank');
+}
+
+
+function openEnvelope() {
+  const overlay = document.getElementById("welcomeOverlay");
+  overlay.classList.add("open");
+}
+</script>
+
+<script>
+// Countdown Timer
+const weddingDate = new Date("November 25, 2026 00:00:00").getTime();
+function updateCountdown() {
+  const now = new Date().getTime();
+  const diff = weddingDate - now;
+  if (diff > 0) {
+    document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+    document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    document.getElementById("mins").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    document.getElementById("secs").innerText = Math.floor((diff % (1000 * 60)) / 1000);
+  }
+}
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// Fixed Scratch Card Script
+const canvas = document.getElementById("scratchCanvas");
+const ctx = canvas.getContext("2d");
+
+function initScratchCard() {
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+  ctx.fillStyle = "#c9a76b";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#fff";
+  ctx.font = "bold 16px Georgia";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText("Scratch Here ✨", canvas.width / 2, canvas.height / 2);
+}
+
+window.addEventListener("load", initScratchCard);
+window.addEventListener("resize", initScratchCard);
+
+let isDragging = false;
+
+function scratch(e) {
+  if (!isDragging) return;
+  const rect = canvas.getBoundingClientRect();
+  const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+  const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+
+  ctx.globalCompositeOperation = "destination-out";
+  ctx.beginPath();
+  ctx.arc(x, y, 25, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+canvas.addEventListener("mousedown", () => { isDragging = true; });
+window.addEventListener("mouseup", () => { isDragging = false; });
+canvas.addEventListener("mousemove", scratch);
+
+canvas.addEventListener("touchstart", (e) => { isDragging = true; scratch(e); });
+window.addEventListener("touchend", () => { isDragging = false; });
+canvas.addEventListener("touchmove", (e) => { scratch(e); e.preventDefault(); }, { passive: false });
+
+</script>
+</body>
+</html>
